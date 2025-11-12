@@ -1,0 +1,66 @@
+version: '3.8'
+
+networks:
+  application:
+    driver: bridge
+
+services:
+  app:
+    build:
+      context: ./gap-app
+      dockerfile: docker/php/Dockerfile   
+    container_name: whitehat-gap-app
+    volumes:
+      - ./gap-app:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - application
+
+  nginx:
+    image: nginx:latest
+    container_name: whitehat-gap-nginx
+    ports:
+      - "8899:80"
+    volumes:
+      - ./gap-app:/var/www/html
+      - ./gap-app/docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - application
+
+  mysql:
+    image: mysql:5.7
+    container_name: whitehat-gap-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: whitehat-gap
+      MYSQL_USER: whitehat-gap
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3344:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - application
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: whitehat-gap-phpmyadmin
+    restart: always
+    ports:
+      - "8878:80"
+    environment:
+      PMA_HOST: whitehat-gap-mysql
+      PMA_PORT: 3306
+      PMA_USER: whitehat-gap
+      PMA_PASSWORD: secret
+    depends_on:
+      - mysql
+    networks:
+      - application
+
+volumes:
+  mysql-data:

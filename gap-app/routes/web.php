@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return ['Laravel' => app()->version()];
 });
 
-use App\Http\Controllers\AdminController;
-
-Route::get('/admin', [AdminController::class, 'index'])->middleware('role_or_permission:admin');
+require __DIR__.'/auth.php';
