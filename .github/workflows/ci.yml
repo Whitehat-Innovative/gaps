@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v4
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo, pdo_sqlite, sqlite3
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ runner.os }}-${{ hashFiles('gap-app/composer.lock') }}
+          restore-keys: |
+            composer-${{ runner.os }}-
+
+      - name: Install PHP dependencies
+        working-directory: gap-app
+        run: composer install --no-progress --no-suggest --prefer-dist --no-interaction
+
+      - name: Prepare SQLite database and run migrations
+        working-directory: gap-app
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: |
+          touch database/database.sqlite
+          php artisan key:generate --ansi
+          php artisan migrate --force --no-interaction
+
+      - name: Run tests
+        working-directory: gap-app
+        run: php artisan test --no-interaction --colors=never
