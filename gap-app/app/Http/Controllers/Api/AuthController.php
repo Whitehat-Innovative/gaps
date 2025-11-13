@@ -36,6 +36,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'status' => 'active',
         ]);
         // Send email verification notification and require verification before issuing tokens
         $user->sendEmailVerificationNotification();

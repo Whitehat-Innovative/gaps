@@ -3,12 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\MembershipController;
+use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\ProfileController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Authentication routes (API) - register, login, logout, password reset, email verification
+// Authentication routes 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -23,7 +26,24 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-// Email verification (signed URL) - public GET route
+Route::middleware(['auth:sanctum'])->group(function () {
+
+
+    Route::prefix('profile')->group(function () {
+
+            Route::post('/update', [MembershipController::class, 'updateProfile']);
+    });
+
+    Route::prefix('plan')->group(function () {
+
+            Route::get('/show_plans', [PlanController::class, 'showPlans']);
+            Route::get('/show_inactive_plans', [PlanController::class, 'showInactivePlans']);
+
+    });
+
+});
+
+// Email verification route
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
 
 // Protected API endpoints for authenticated users with admin role
