@@ -27,7 +27,7 @@ COPY . .
 # ✅ Install Laravel dependencies
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Expose Laravel serve port
+# Expose Laravel serve portt
 # EXPOSE 8000
 
 # Serve Laravel directly
