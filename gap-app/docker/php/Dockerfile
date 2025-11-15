@@ -40,15 +40,17 @@ CMD ["php-fpm"]
 # Render configuration for ng
 
 
-# Install Nginx
-RUN apt-get update && apt-get install -y nginx
+# Install Nginx + envsubst
+RUN apt-get update && apt-get install -y nginx gettext-base
 
-# Copy Nginx configuration
-COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+# Copy Nginx config template
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf.template
 
 # Expose Render port
 EXPOSE ${PORT}
 
-# Start Nginx and PHP-FPM together
-CMD service nginx start && php-fpm
+# Start Nginx and PHP-FPM using PORT
+CMD envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
+    && service nginx start \
+    && php-fpm
 
