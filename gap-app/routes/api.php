@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\MembershipController;
 use App\Http\Controllers\Api\PlanController;
+use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Subscription;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -39,6 +41,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/show_plans', [PlanController::class, 'showPlans']);
             Route::get('/show_inactive_plans', [PlanController::class, 'showInactivePlans']);
 
+    });
+
+    Route::prefix('subscriptions')->group(function () {
+
+            Route::post('/share_sub_proof', [SubscriptionController::class, 'shareSubProof']);
+
+            Route::get('/show_active_subs', [SubscriptionController::class, 'showSubs']);
+            Route::get('/show_inactive_subs', [SubscriptionController::class, 'showInactiveSubs']);
+    });
+
+    Route::prefix('banks')->group(function () {
+
+            Route::post('/share_sub_proof', [SubscriptionController::class, 'shareSubProof']);
+
+            Route::get('/show_active_subs', [SubscriptionController::class, 'showSubs']);
+            Route::get('/show_inactive_subs', [SubscriptionController::class, 'showInactiveSubs']);
     });
 
 });

@@ -35,3 +35,20 @@ EXPOSE 8000
 
 CMD ["php-fpm"]
 
+
+
+# Render configuration for ng
+
+
+# Install Nginx
+RUN apt-get update && apt-get install -y nginx
+
+# Copy Nginx configuration
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Expose Render port
+EXPOSE ${PORT}
+
+# Start Nginx and PHP-FPM together
+CMD service nginx start && php-fpm
+

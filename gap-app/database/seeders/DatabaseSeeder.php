@@ -28,5 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\RolePermissionSeeder::class);
         // Seed plans
         $this->call(\Database\Seeders\PlanSeeder::class);
+        // Seed banks
+        $this->call(\Database\Seeders\BankSeeder::class);
     }
 }
