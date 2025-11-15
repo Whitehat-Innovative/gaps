@@ -49,8 +49,13 @@ COPY ./docker/nginx/default.conf /etc/nginx/conf.d/default.conf.template
 EXPOSE ${PORT}
 
 # Start Nginx and PHP-FPM using PORT
-CMD envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
-    && nginx \
-    && php-fpm
+# CMD envsubst '${PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
+#     && nginx \
+#     && php-fpm
+
+    CMD ["sh", "/var/www/html/docker/start.sh"]
+
+
+RUN chmod +x docker/start.sh
 
 
