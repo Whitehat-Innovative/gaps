@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->string('duration'); // e.g., '30', '6'.
             $table->string('duration_unit'); // e.g., 'days', 'months', 'years', 'hours.
+            $table->string('days')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

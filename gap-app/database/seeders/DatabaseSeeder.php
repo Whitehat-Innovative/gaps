@@ -30,5 +30,10 @@ class DatabaseSeeder extends Seeder
         $this->call(\Database\Seeders\PlanSeeder::class);
         // Seed banks
         $this->call(\Database\Seeders\BankSeeder::class);
+        // Seed subscriptions
+        $this->call(\Database\Seeders\SubscriptionSeeder::class);
+        $this->call(\Database\Seeders\NotificationSeeder::class);
+        $this->call(\Database\Seeders\NotifyUserSeeder::class);
+
     }
 }

@@ -38,5 +38,51 @@
             </p>
         </div>
     </div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-messaging.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBanbPA685TE3KDjCC9I09lMPKV7fh2mZ4",
+    authDomain: "fitbase-3a4eb.firebaseapp.com",
+    projectId: "fitbase-3a4eb",
+    storageBucket: "fitbase-3a4eb.firebasestorage.app",
+    messagingSenderId: "343450984538",
+    appId: "1:343450984538:web:d11f4f4e1a75198d7b7863",
+    measurementId: "G-4M67Z1XQ45"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  // Request browser permission
+  Notification.requestPermission().then(async (permission) => {
+    if (permission === "granted") {
+
+      const token = await getToken(messaging, {
+        vapidKey:
+          "BEIxKW_xviKq8WShT2OvlBQ0--MvHQ-0IBLmcblRQWB9-Kg2IgOI8omopEh2OLAtwU8M1dci2v7L8DXhJRvS6qY",
+        serviceWorkerRegistration: await navigator.serviceWorker.register(
+          "/firebase-messaging-sw.js"
+        ),
+      });
+
+      console.log("FCM Token:", token);
+      alert("FCM Token:\n\n" + token);
+    } else {
+      alert("Permission denied.");
+    }
+  });
+</script>
+
+
+
+
+
 </body>
+
+
+
 </html>

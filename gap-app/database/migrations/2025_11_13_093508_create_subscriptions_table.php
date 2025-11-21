@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('plan_id')->constrained()->onDelete('cascade');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
+            $table->string('days_total')->nullable();
+            $table->string('days_left')->nullable();
             $table->string('status')->default('pending'); // e.g., pending, cancelled, active, expired
             $table->string('payment_method')->nullable();
             $table->decimal('amount_paid', 8, 2)->nullable();

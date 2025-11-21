@@ -191,6 +191,12 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
+
+        $user = $request->user();  // this NEVER throws
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
         return response()->json($request->user());
     }
 

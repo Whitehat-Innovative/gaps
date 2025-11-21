@@ -55,4 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(NotifyUser::class, 'user_id', 'id');
+    }
 }
